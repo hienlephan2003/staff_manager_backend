@@ -1,4 +1,4 @@
-const { getFile, uploadNewFile }=require( "../Services/imageService");
+const { getFile, uploadNewFile } = require("../Services/imageService");
 const path = require("path");
 const fs = require("fs");
 
@@ -9,8 +9,7 @@ const imageController = {
       const data = await uploadNewFile(req.file);
       if (!data) throw Error;
       else {
-        const fileUrl = `https://cloud.appwrite.io/v1/storage/buckets/656b2dfc5d5d7c01094e/files/${data?.$id}/view?project=656b2afd740f329c2f5d&mode=admin`;
-        // const fileUrl = await getFile(data?.$id);
+        const fileUrl = `https://cloud.appwrite.io/v1/storage/buckets/657c16646aaed10725cc/files/${data?.$id}/view?project=657c162ac890feaa8c5a&mode=admin`;
         return res.status(200).json({ url: fileUrl });
       }
     } catch (err) {
@@ -29,4 +28,4 @@ const imageController = {
   },
 };
 
-export default imageController;
+module.exports = imageController;

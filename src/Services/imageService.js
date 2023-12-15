@@ -1,27 +1,26 @@
-import { appWriteConfig } from "../config/appwriteConfig";
-import {
+const {
   ID,
   InputFile,
   Client,
   Storage,
   Role,
   Permission,
-} from "node-appwrite";
+} = require("node-appwrite");
 const client = new Client();
 client
   .setEndpoint("https://cloud.appwrite.io/v1")
-  .setProject("656b2afd740f329c2f5d")
+  .setProject("657c162ac890feaa8c5a")
   .setKey(
-    "8e3e329053c224b736a60c9610222aa27cd8aa07bd987c7695a51d5a51fa7da9d709537cf90fde0a142d09e4c6ed83fb28074b62626f43f01a50d4bf84a05821e584bf86c5e5259dc77425fc64c9284a36218ae32f1a0ed0c121c20705fa4b9d59b919f8f366f51bee9a62de54fc7f62fbcbed90e889783bba4860d04c04cef1"
+    "16938839ad6e4166b96e2a6a900ef6162d4065f2ff3ed78670953cfcc945ab4f345468f843c962ea340b2dffa6b28be114e9a92bf35a73df1a5b5caedf07b241c2e08bbe21f8a6bd83f8fe5110d3ac6252c1948fb4c0e432af474a0274176d6f546641eee75933cd94827142581469e9d1322863d223b57d9911ddc7863a4705"
   )
   .setSelfSigned();
 const storage = new Storage(client);
 
-export const uploadNewFile = async (file: any) => {
+const uploadNewFile = async (file) => {
   return new Promise(async (resolve, reject) => {
     try {
       const uploadFile = await storage.createFile(
-        "656b2dfc5d5d7c01094e",
+        "657c16646aaed10725cc",
         ID.unique(),
         InputFile.fromBuffer(file.buffer, file.originalname),
         [
@@ -37,11 +36,11 @@ export const uploadNewFile = async (file: any) => {
     }
   });
 };
-export const getFile = async (fileId: string) => {
+const getFile = async (fileId) => {
   return new Promise(async (resolve, reject) => {
     try {
       const fileUrl = await storage.getFileDownload(
-        "656b2dfc5d5d7c01094e",
+        "657c16646aaed10725cc",
         fileId
       );
       resolve(fileUrl);
@@ -51,3 +50,4 @@ export const getFile = async (fileId: string) => {
     }
   });
 };
+module.exports = { uploadNewFile, getFile };
