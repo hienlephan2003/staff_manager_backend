@@ -9,6 +9,19 @@ const EmployeeSchema = new mongoose.Schema({
   dateOfBirth: Date,
   addressId: { type: mongoose.Types.ObjectId, required: true },
   startTimeWorking: Date,
+  dependencePersons: [
+    {
+      name: String,
+      role: String,
+    },
+  ],
+  status: {
+    type: String,
+    enum: ["working", "leaved"],
+  },
+  latestContract: {
+    type: mongoose.Types.ObjectId,
+  },
 });
 const Employee = mongoose.model("Employee", EmployeeSchema);
 

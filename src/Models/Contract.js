@@ -21,6 +21,10 @@ const ContractSchema = new mongoose.Schema({
     type: Number,
     required: true,
   },
+  overtimeRate: {
+    type: Number,
+    required: true,
+  },
   moneyItems: [
     {
       type: mongoose.Types.ObjectId,
