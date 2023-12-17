@@ -21,6 +21,11 @@ const ContractSchema = new mongoose.Schema({
     type: Number,
     required: true,
   },
+  moneyItems: [
+    {
+      type: mongoose.Types.ObjectId,
+    },
+  ],
 });
 const Contract = mongoose.model("Contract", ContractSchema);
 

@@ -14,23 +14,17 @@ const TimeSheetSchema = new mongoose.Schema({
       enum: ["day", "shift"],
       required: true,
     },
-    numShiftPerDay: {
-      type: Number,
-      required: true,
-    },
-    shifts: [
-      {
-        dayOfWeek: { type: Number, required: true },
-        startHour: { type: Date, required: true },
-        endHour: { type: Date, required: true },
-        typeShift: {
-          type: String,
-          enum: ["standard", "overtime"],
-          required: true,
-        },
-      },
-    ],
   },
+  numShiftPerDay: {
+    type: Number,
+    required: true,
+  },
+  shifts: [
+    {
+      id: mongoose.Types.ObjectId,
+      ref: "Shift",
+    },
+  ],
 });
 const TimeSheet = mongoose.model("TimeSheet", TimeSheetSchema);
 
