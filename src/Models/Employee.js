@@ -8,6 +8,7 @@ const EmployeeSchema = new mongoose.Schema({
   identifyCardNumber: String,
   dateOfBirth: Date,
   addressId: { type: mongoose.Types.ObjectId, required: true },
+  startTimeWorking: Date,
 });
 const Employee = mongoose.model("Employee", EmployeeSchema);
 

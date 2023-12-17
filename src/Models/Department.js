@@ -7,3 +7,6 @@ const DepartmentSchema = mongoose.Schema({
   },
   createdDate: Date,
 });
+const Department = mongoose.model("Department", DepartmentSchema);
+
+module.exports = Department;
