@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 
 const JobPositionTypeSchema = new mongoose.Schema({
-  policyName: string,
+  jobPositionTypeName: String,
   description: String,
 });
 const JobPositionType = mongoose.model(

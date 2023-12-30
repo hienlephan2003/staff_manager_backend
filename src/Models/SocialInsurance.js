@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 
 const SocialInsuranceSchema = new mongoose.Schema({
   employeeId: {
-    type: mongoose.Types.ObjectId,
+    type: mongoose.Schema.Types.ObjectId,
     ref: "Employee",
     required: true,
   },

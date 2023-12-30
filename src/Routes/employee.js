@@ -3,10 +3,16 @@ const {
   addEmployee,
   updateEmployee,
   deleteEmployee,
+  getEmployee,
 } = require("../Controllers/employeeController.js");
 
 router.post("/newEmployee", addEmployee);
 router.post("/updateEmployee", updateEmployee);
-router.post("/deleteEmployee", deleteEmployee);
-
+router.delete("/deleteEmployee", deleteEmployee);
+router.get("/:id", getEmployee);
 module.exports = router;
+
+// localhost:3000/api/degree/newDegree
+// localhost:3000/api/degree/updateDegree
+// localhost:3000/api/degree/deleteDegree/223
+// localhost:3000/api/degree/

@@ -1,13 +1,13 @@
 const mongoose = require("mongoose");
 
-const MoneySchema = new mongoose.Schema({
-  moneyTypeId: { type: mongoose.Types.ObjectId, required: true },
+const MoneyItemSchema = new mongoose.Schema({
+  moneyTypeId: { type: mongoose.Schema.Types.ObjectId, required: true },
   type: {
     type: String,
     enum: ["fixed", "input", "percent", "formular"],
   },
   value: String,
 });
-const Money = mongoose.model("Money", MoneySchema);
+const MoneyItem = mongoose.model("MoneyItem", MoneyItemSchema);
 
-module.exports = Money;
+module.exports = MoneyItem;

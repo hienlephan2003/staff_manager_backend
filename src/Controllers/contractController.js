@@ -13,7 +13,7 @@ const contractController = {
     try {
       const updateContract = await contractService.updateContract(
         req.body.id,
-        req.body.event
+        req.body.contract
       );
       res.status(200).json(updateContract);
     } catch (err) {

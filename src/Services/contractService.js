@@ -1,14 +1,38 @@
+const { default: mongoose } = require("mongoose");
 const Contract = require("../Models/Contract");
+const ContractType = require("../Models/ContractType");
 const contractService = {
-  createNewContract: (contract) => {
+  createNewContract: (employeeId, contract) => {
     return new Promise(async (resolve, reject) => {
       try {
-        const newAddress = new Address(contract.address);
-        contract.addressId = newAddress._id;
-        const newContract = new Contract(contract);
-        newAddress.save();
-        const saveContract = await newContract.save();
-        resolve(saveContract);
+        const moneyItems = Object.keys(contract.moneyItems).map((item) => {
+          return {
+            type: item,
+            value: contract.moneyItems[item],
+          };
+        });
+        console.log(moneyItems);
+        contract.moneyItems = moneyItems;
+        const newContract = await Contract.create({
+          ...contract,
+          employeeId,
+        });
+        resolve(newContract);
+      } catch (e) {
+        console.log(e);
+        reject(e);
+      }
+    });
+  },
+  createNewContractType: (contractTypeName, description) => {
+    return new Promise(async (resolve, reject) => {
+      try {
+        const newContractType = new ContractType({
+          contractTypeName,
+          description,
+        });
+        const saveContractType = await newContractType.save();
+        resolve(saveContractType);
       } catch (e) {
         reject(e);
       }

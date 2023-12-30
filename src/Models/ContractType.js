@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 
 const ContractTypeSchema = new mongoose.Schema({
-  contractTypeName: string,
+  contractTypeName: String,
   description: String,
 });
 const ContractType = mongoose.model("ContractType", ContractTypeSchema);

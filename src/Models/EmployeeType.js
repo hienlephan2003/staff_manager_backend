@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 
 const EmployeeTypeTypeSchema = new mongoose.Schema({
-  employeeTypeName: string,
+  employeeTypeName: String,
   description: String,
 });
 const EmployeeTypeType = mongoose.model(

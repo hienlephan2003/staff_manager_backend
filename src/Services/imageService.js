@@ -19,10 +19,11 @@ const storage = new Storage(client);
 const uploadNewFile = async (file) => {
   return new Promise(async (resolve, reject) => {
     try {
+      console.log(file);
       const uploadFile = await storage.createFile(
         "657c16646aaed10725cc",
         ID.unique(),
-        InputFile.fromBuffer(file.buffer, file.originalname),
+        file,
         [
           Permission.read(Role.any()),
           Permission.update(Role.any()),

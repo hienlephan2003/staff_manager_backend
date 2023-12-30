@@ -1,10 +1,23 @@
 const employeeService = require("../Services/employeeService");
 const Employee = require("../Models/Employee");
+const contractService = require("../Services/contractService");
+const userService = require("../Services/userService");
 const employeeController = {
   addEmployee: async (req, res) => {
     try {
-      const newEmployee = await employeeService.createNewEmployee(req.body);
-      return res.status(200).json(newEmployee);
+      employeeService
+        .createNewEmployee(req.body.employee)
+        .then((employee) => {
+          userService.createNewUser({
+            employeeId: employee._id,
+            email: employee.email,
+            password: "123456",
+          });
+          contractService
+            .createNewContract(employee._id, req.body.contract)
+            .then((contract) => res.status(200).json({ employee, contract }));
+        })
+        .catch((error) => res.status(400).json(error));
     } catch (err) {
       return res.status(500).json(err);
     }
@@ -24,6 +37,14 @@ const employeeController = {
     try {
       await Employee.findByIdAndDelete(req.params.id);
       res.status(200).json("Employee successfully deleted");
+    } catch (err) {
+      res.status(500).json(err);
+    }
+  },
+  getEmployee: async (req, res) => {
+    try {
+      const employee = await Employee.findBtyId(req.params.id);
+      res.status(200).json(employee);
     } catch (err) {
       res.status(500).json(err);
     }

@@ -1,9 +1,19 @@
 const Employee = require("../Models/Employee");
+const Address = require("../Models/Address");
+const { uploadNewFile } = require("../Services/imageService");
 const employeeService = {
   createNewEmployee: (employee) => {
     return new Promise(async (resolve, reject) => {
       try {
-        const newAddress = new Address(employee.address);
+        const address = {
+          province: employee.province.name,
+          district: employee.district.name,
+          ward: employee.ward.name,
+          provinceCode: employee.province.code,
+          districtCode: employee.district.code,
+          wardCode: employee.ward.code,
+        };
+        const newAddress = new Address(address);
         employee.addressId = newAddress._id;
         const newEmployee = new Employee(employee);
         newAddress.save();

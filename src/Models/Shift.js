@@ -1,18 +1,38 @@
-const { default: mongoose } = require("mongoose");
+const mongoose = require("mongoose");
 
-const ShiftSchema = mongoose.Schema({
+const shiftSchema = new mongoose.Schema({
+  startHour: Number,
+  startMinute: Number,
+  endHour: Number,
+  endMinute: Number,
   timeSheetId: {
-    type: mongoose.Types.ObjectId,
+    type: mongoose.Schema.Types.ObjectId,
     ref: "TimeSheet",
   },
-  dayOfWeek: { type: Number, required: true },
-  startHour: { type: Date, required: true },
-  endHour: { type: Date, required: true },
-  typeShift: {
-    type: String,
-    enum: ["standard", "overtime"],
+  shiftType: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "ShiftType",
     required: true,
   },
+  dayOfWeek: Number,
 });
 
-module.exports = Shift = mongoose.model("ShiftSchema", ShiftSchema);
+shiftSchema.pre("save", function (next) {
+  console.log("pre save" + this.time);
+  const timeString = this.time;
+  if (timeString) {
+    const [startTime, endTime] = timeString.split(" - ");
+
+    const [startHour, startMinute] = startTime.split(":").map(Number);
+    const [endHour, endMinute] = endTime.split(":").map(Number);
+
+    this.startHour = startHour;
+    this.startMinute = startMinute;
+    this.endHour = endHour;
+    this.endMinute = endMinute;
+  }
+  next();
+});
+const Shift = mongoose.model("Shift", shiftSchema);
+
+module.exports = Shift;

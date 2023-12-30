@@ -7,7 +7,6 @@ const AddressSchema = new mongoose.Schema(
     provinceCode: { type: Number, required: true },
     districtCode: { type: Number, required: true },
     wardCode: { type: Number, required: true },
-    displacePlace: { type: String, required: true },
   },
   { timestamps: true }
 );

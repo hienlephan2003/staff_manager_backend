@@ -3,11 +3,15 @@ const mongoose = require("mongoose");
 const EmployeeSchema = new mongoose.Schema({
   email: { type: String },
   fullName: String,
-  phoneNumber: { type: String, required: true, unique: true },
+  phoneNumber: { type: String, required: true },
   imageUrl: String,
   identifyCardNumber: String,
   dateOfBirth: Date,
-  addressId: { type: mongoose.Types.ObjectId, required: true },
+  addressId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Address",
+    required: true,
+  },
   startTimeWorking: Date,
   dependencePersons: [
     {
@@ -20,9 +24,11 @@ const EmployeeSchema = new mongoose.Schema({
     enum: ["working", "leaved"],
   },
   latestContract: {
-    type: mongoose.Types.ObjectId,
+    type: mongoose.Schema.Types.ObjectId,
+  },
+  degree: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Degree",
   },
 });
-const Employee = mongoose.model("Employee", EmployeeSchema);
-
-module.exports = Employee;
+module.exports = Employee = mongoose.model("Employee", EmployeeSchema);

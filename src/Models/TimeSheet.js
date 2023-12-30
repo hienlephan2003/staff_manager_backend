@@ -5,26 +5,17 @@ const TimeSheetSchema = new mongoose.Schema({
   timesheetType: {
     type: String,
     enum: ["fixed", "dynamic"],
-    required: true,
+    default: "fixed",
   },
   checkInPolicy: {
     type: String,
-    enum: {
-      type: String,
-      enum: ["day", "shift"],
-      required: true,
-    },
+    enum: ["day", "shift"],
+    default: "day",
   },
   numShiftPerDay: {
     type: Number,
     required: true,
   },
-  shifts: [
-    {
-      id: mongoose.Types.ObjectId,
-      ref: "Shift",
-    },
-  ],
 });
 const TimeSheet = mongoose.model("TimeSheet", TimeSheetSchema);
 

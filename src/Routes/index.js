@@ -1,9 +1,25 @@
 const employeeRouter = require("./employee.js");
 const userRouter = require("./user.js");
 const imageRouter = require("./image.js");
+const departmentRouter = require("./department.js");
+const employeeTypeRouter = require("./employeeType.js");
+const jobPositionRouter = require("./jobPosition.js");
+const jobPositionTypeRouter = require("./jobPositionType.js");
+const contractTypeRouter = require("./contractType.js");
+const moneyTypeRouter = require("./moneyType.js");
+const timesheetRouter = require("./timesheet.js");
+const attendanceRouter = require("./attendance.js");
 const Routes = (app) => {
   app.use("/api/employee", employeeRouter);
+  app.use("/api/employeeType", employeeTypeRouter);
   app.use("/api/user", userRouter);
   app.use("/api/image", imageRouter);
+  app.use("/api/department", departmentRouter);
+  app.use("/api/jobPositionType", jobPositionTypeRouter);
+  app.use("/api/jobPosition", jobPositionRouter);
+  app.use("/api/contractType", contractTypeRouter);
+  app.use("/api/moneyType", moneyTypeRouter);
+  app.use("/api/timesheet", timesheetRouter);
+  app.use("/api/attendance", attendanceRouter);
 };
 module.exports = Routes;

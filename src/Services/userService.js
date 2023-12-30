@@ -1,11 +1,13 @@
 const User = require("../Models/User");
+const CryptoJS = require("crypto-js");
+
 const userService = {
   createNewUser: (user) => {
     return new Promise(async (resolve, reject) => {
       try {
         const password = CryptoJS.AES.encrypt(
           user.password,
-          process.env.SECRET
+          "staffmanager"
         ).toString();
         user.password = password;
         const newUser = new User(user);

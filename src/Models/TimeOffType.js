@@ -7,7 +7,7 @@ const TimeOffTypeSchema = new mongoose.Schema({
     required: true,
   },
   approver: {
-    type: mongoose.Types.ObjectId,
+    type: mongoose.Schema.Types.ObjectId,
   },
   isReportToApprover: {
     type: Boolean,

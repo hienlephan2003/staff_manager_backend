@@ -8,13 +8,13 @@ const PayrollTemplateSchema = new mongoose.Schema({
     required: true,
   },
   payRollPolicyId: {
-    type: mongoose.Types.ObjectId,
+    type: mongoose.Schema.Types.ObjectId,
     ref: "PayRollPolicy",
     required: true,
   },
   moneyType: [
     {
-      type: mongoose.Types.ObjectId,
+      type: mongoose.Schema.Types.ObjectId,
       ref: "MoneyType",
     },
   ],

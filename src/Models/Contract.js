@@ -1,20 +1,21 @@
 const mongoose = require("mongoose");
 
 const ContractSchema = new mongoose.Schema({
-  contractType: {
-    type: mongoose.Types.ObjectId,
+  type: {
+    type: mongoose.Schema.Types.ObjectId,
     ref: "ContractType",
     required: true,
   },
-  startDate: { type: Date, required: true },
-  endDate: { type: Date },
-  jobPosition: {
-    type: mongoose.Types.ObjectId,
-    ref: "JobPosition",
+  employeeId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Employee",
     required: true,
   },
-  basicSalary: {
-    type: Number,
+  startDate: { type: Date, required: true },
+  expiredDate: { type: Date },
+  jobPosition: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "JobPosition",
     required: true,
   },
   salary: {
@@ -25,9 +26,14 @@ const ContractSchema = new mongoose.Schema({
     type: Number,
     required: true,
   },
+  lateMinusPertime: {
+    type: Number,
+    required: true,
+  },
   moneyItems: [
     {
-      type: mongoose.Types.ObjectId,
+      type: { type: mongoose.Schema.Types.ObjectId, ref: "MoneyType" },
+      value: Number,
     },
   ],
 });

@@ -5,7 +5,7 @@ const User = require("../Models/User");
 const userController = {
   addUser: async (req, res) => {
     try {
-      const newUser = await userService.updateUser(req.body.user);
+      const newUser = await userService.createNewUser(req.body.user);
       return res.status(200).json(newUser);
     } catch (err) {
       return res.status(500).json(err);
@@ -24,7 +24,10 @@ const userController = {
   },
   loginUser: async (req, res) => {
     try {
-      const user = await User.findOne({ userName: req.body.userName });
+      console.log(req.body);
+      const user = await User.findOne({ email: req.body.email }).populate(
+        "employeeId"
+      );
 
       if (!user) {
         return res.status(401).json("Wrong Login Details");
@@ -32,7 +35,7 @@ const userController = {
 
       const descryptedPass = CryptoJS.AES.decrypt(
         user?.password,
-        process.env.SECRET
+        "staffmanager"
       );
       const depassword = descryptedPass.toString(CryptoJS.enc.Utf8);
 
@@ -43,8 +46,9 @@ const userController = {
         {
           id: user._id,
           role: user.role,
+          employeeId: user.employeeId,
         },
-        process.env.SECRET,
+        "staffmanager",
         { expiresIn: "21d" }
       );
       const userObj = user.toObject();

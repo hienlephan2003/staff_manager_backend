@@ -2,12 +2,12 @@ const mongoose = require("mongoose");
 
 const TimeOffSchema = new mongoose.Schema({
   employeeId: {
-    type: mongoose.Types.ObjectId,
+    type: mongoose.Schema.Types.ObjectId,
     ref: "Employee",
     required: true,
   },
   timeOffTypeId: {
-    type: mongoose.Types.ObjectId,
+    type: mongoose.Schema.Types.ObjectId,
     ref: "TimeSheet",
     required: true,
   },

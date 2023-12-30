@@ -1,11 +1,14 @@
 const mongoose = require("mongoose");
 const DepartmentSchema = mongoose.Schema({
-  departmentName: String,
+  departmentName: { type: String, required: true },
   manager: {
-    type: mongoose.Types.ObjectId,
-    required: true,
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Employee",
   },
-  createdDate: Date,
+  createdDate: {
+    type: Date,
+    default: Date.now(),
+  },
 });
 const Department = mongoose.model("Department", DepartmentSchema);
 
