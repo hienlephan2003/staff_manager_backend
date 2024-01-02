@@ -36,6 +36,10 @@ const ContractSchema = new mongoose.Schema({
       value: Number,
     },
   ],
+  timesheetId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "TimeSheet",
+  },
 });
 const Contract = mongoose.model("Contract", ContractSchema);
 

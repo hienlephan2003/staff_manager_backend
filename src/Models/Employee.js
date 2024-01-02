@@ -23,9 +23,6 @@ const EmployeeSchema = new mongoose.Schema({
     type: String,
     enum: ["working", "leaved"],
   },
-  latestContract: {
-    type: mongoose.Schema.Types.ObjectId,
-  },
   degree: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Degree",
