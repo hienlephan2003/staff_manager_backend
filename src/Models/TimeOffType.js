@@ -1,18 +1,20 @@
 const mongoose = require("mongoose");
 
 const TimeOffTypeSchema = new mongoose.Schema({
-  typeOffTypeName: { type: String, required: true },
-  isAttendance: {
-    type: Boolean,
-    required: true,
+  timeOffTypeName: { type: String, required: true },
+  numOfDate: Number,
+  status: { type: String, enum: ["disable", "active"], default: "active" },
+  increasePerMonth: Number,
+  timeOffType: {
+    type: String,
+    enum: ["reserve", "notreserve"],
   },
-  approver: {
-    type: mongoose.Schema.Types.ObjectId,
-  },
-  isReportToApprover: {
-    type: Boolean,
-    default: false,
-  },
+  addForOlds: [
+    {
+      minDate: Number,
+      amount: Number,
+    },
+  ],
 });
 const TimeOffType = mongoose.model("TimeOffType", TimeOffTypeSchema);
 

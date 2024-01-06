@@ -8,7 +8,7 @@ const TimeOffSchema = new mongoose.Schema({
   },
   timeOffTypeId: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: "TimeSheet",
+    ref: "TimeOffType",
     required: true,
   },
   startDate: {
@@ -17,14 +17,11 @@ const TimeOffSchema = new mongoose.Schema({
   endDate: {
     type: Date,
   },
-  shiftCount: {
-    type: Number,
-    required: true,
-  },
   status: {
     type: String,
     enum: ["approved", "rejected", "pending"],
   },
+  numOfDate: Number,
 });
 const TimeOff = mongoose.model("TimeOff", TimeOffSchema);
 

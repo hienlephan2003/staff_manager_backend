@@ -9,6 +9,11 @@ const contractTypeRouter = require("./contractType.js");
 const moneyTypeRouter = require("./moneyType.js");
 const timesheetRouter = require("./timesheet.js");
 const attendanceRouter = require("./attendance.js");
+const pointRouter = require("./point.js");
+const employeeTimesheetRouter = require("./employeeTimesheet.js");
+const attendace2Service = require("./attendancev2.js");
+const salaryRouter = require("./salary.js");
+const timeOffRouter = require("./timeoff.js");
 const Routes = (app) => {
   app.use("/api/employee", employeeRouter);
   app.use("/api/employeeType", employeeTypeRouter);
@@ -21,5 +26,10 @@ const Routes = (app) => {
   app.use("/api/moneyType", moneyTypeRouter);
   app.use("/api/timesheet", timesheetRouter);
   app.use("/api/attendance", attendanceRouter);
+  app.use("/api/point", pointRouter);
+  app.use("/api/employeeTimesheet", employeeTimesheetRouter);
+  app.use("/api/attendance2", attendace2Service);
+  app.use("/api/salary", salaryRouter);
+  app.use("/api/timeoff", timeOffRouter);
 };
 module.exports = Routes;

@@ -6,6 +6,10 @@ const ContractSchema = new mongoose.Schema({
     ref: "ContractType",
     required: true,
   },
+  status: {
+    type: String,
+    enum: ["expired", "using"],
+  },
   employeeId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Employee",
@@ -36,10 +40,6 @@ const ContractSchema = new mongoose.Schema({
       value: Number,
     },
   ],
-  timesheetId: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "TimeSheet",
-  },
 });
 const Contract = mongoose.model("Contract", ContractSchema);
 

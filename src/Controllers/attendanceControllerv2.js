@@ -1,55 +1,66 @@
 const moment = require("moment");
 const Attendance = require("../Models/Attendance");
-const attendanceService = require("../Services/attendaceService");
+const attendanceService2 = require("../Services/attendanceServicev2");
 const Shift = require("../Models/Shift");
 const TimeSheet = require("../Models/TimeSheet");
 const Contract = require("../Models/Contract");
-const timesheetService = require("../Services/timeSheetService");
 const EmployeeTimesheet = require("../Models/EmployeeTimesheet");
+const timesheetService = require("../Services/timeSheetService");
 
-const attendanceController = {
+const attendanceControllerv2 = {
+  //use
   getTodayAttendances: async (req, res) => {
     try {
-      const today = moment().startOf("day");
-      const tomorrow = moment(today).endOf("day");
+      const today = moment().startOf("day").add(1);
+      const tomorrow = moment(today).endOf("day").add(1);
       const employeeId = req.body.user.employeeId;
-      const contract = await Contract.findOne({ employeeId }).sort({
-        createdAt: -1,
-      });
-      const timesheet = await TimeSheet.findById(contract.timesheetId);
-      const shifts = await Shift.find({
-        timeSheetId: contract.timesheetId,
-        dayOfWeek: new Date().getDay(),
-      });
-
-      // console.log(contract);
-      // console.log(shifts);
+      const employeeTimesheet = await EmployeeTimesheet.findOne({
+        employeeId,
+      }).populate("timesheetId");
+      console.log(employeeTimesheet);
+      const shifts = await Shift.aggregate([
+        {
+          $match: {
+            timeSheetId: employeeTimesheet.timesheetId._id,
+            $expr: {
+              $or: [
+                { $eq: ["$date", today] },
+                { $eq: ["$dayOfWeek", today.day()] },
+              ],
+            },
+          },
+        },
+      ]);
       if (!shifts || shifts.length == 0) res.status(200).json("Not found");
       else {
         const attendances = await Attendance.find({
           employeeId: employeeId,
           checkInTime: { $gte: today.toDate(), $lt: tomorrow.toDate() },
         });
-        res.status(200).json({ timesheet, shifts, attendances });
+        res.status(200).json({
+          timesheet: employeeTimesheet.timesheetId,
+          shifts,
+          attendances,
+        });
       }
     } catch (err) {
       console.log(err);
       res.status(500).json(err);
     }
   },
+  //use
   addAttendanceCheckIn: async (req, res) => {
     try {
       console.log("theem check in ne");
       const employeeId = req.body.user.employeeId;
-      const empti = await EmployeeTimesheet.findOne({ employeeId }).populate(
-        "timesheetId"
-      );
-      const timesheetId = empti.timesheetId._id;
+      console.log(employeeId);
+      const emti = await EmployeeTimesheet.findOne({
+        employeeId,
+      }).populate("timesheetId");
       const shiftId = req.body.shiftId;
-      const timesheet = await TimeSheet.findById(timesheetId);
       const today = moment().startOf("day");
       const tomorrow = moment(today).endOf("day");
-      if (timesheet.checkInPolicy == "day") {
+      if (emti.timesheetId.checkInPolicy == "day") {
         const attendance = await Attendance.findOne({
           employeeId,
           checkInTime: { $gte: today.toDate(), $lt: tomorrow.toDate() },
@@ -57,20 +68,14 @@ const attendanceController = {
         if (attendance) {
           return res.status(201).json("Check in exists");
         } else {
-          const attendance = await Attendance.findOne({
-            employeeId,
-            date: { $gte: today.toDate(), $lt: tomorrow.toDate() },
-          });
-
           const newAttendance = await Attendance.create({
-            employeeId: employeeId,
+            employeeId,
             date: new Date(),
-            timesheetId,
-            type: "day",
+            checkInTime: new Date(),
           });
           return res.status(200).json(newAttendance);
         }
-      } else if (checkInPolicy.checkInPolicy == "shift" && shiftId != null) {
+      } else if (emti.timesheetId.checkInPolicy == "shift" && shiftId != null) {
         const attendance = await Attendance.findOne({
           employeeId,
           checkInTime: { $gte: today.toDate(), $lt: tomorrow.toDate() },
@@ -82,8 +87,7 @@ const attendanceController = {
           const newAttendance = await Attendance.create({
             employeeId: employeeId,
             date: new Date(),
-            timesheetId,
-            type: "shift",
+            checkInTime: new Date(),
             shiftId,
           });
           return res.status(200).json(newAttendance);
@@ -96,20 +100,11 @@ const attendanceController = {
   },
   addAttendanceCheckOut: async (req, res) => {
     try {
-      // attendanceService
-      //   .checkOutAttendance(req.body.attendanceId)
-      //   .then((data) => res.status(200).json(data))
-      //   .catch((err) => {
-      //     throw Error(err);
-      //   });
-    } catch (err) {
-      res.status(500).json(err);
-    }
-  },
-  addAttendanceCheckOut2: async (req, res) => {
-    try {
-      attendanceService
-        .checkOutAttendance2(req.body.attendanceId, req.body.checkOutTime)
+      attendanceService2
+        .updateAttendanceAndCreatePoints(
+          req.body.attendanceId,
+          req.body.checkOutTime
+        )
         .then((data) => res.status(200).json(data))
         .catch((err) => {
           console.log(err);
@@ -124,13 +119,24 @@ const attendanceController = {
     try {
       const { month, year } = req.query;
       const employeeId = req.body.user.employeeId;
-      const contract = await Contract.findOne({ employeeId }).sort({
-        createdAt: -1,
-      });
-      if (!contract) return res.status(400).json("Not found timesheet");
-
-      attendanceService
-        .calculatePoint2(employeeId, contract.timesheetId, month, year)
+      console.log(employeeId);
+      attendanceService2
+        .getPoint(employeeId, month, year)
+        .then((data) => res.status(200).json(data))
+        .catch((err) => {
+          console.log(err);
+          res.status(500).json(err);
+        });
+    } catch (err) {
+      console.error(err);
+      res.status(500).json({ error: "Server error" });
+    }
+  },
+  getAlllEmployeeAttendancePoints: async (req, res) => {
+    try {
+      const { month, year } = req.query;
+      attendanceService2
+        .getAllPoint(month, year)
         .then((data) => res.status(200).json(data))
         .catch((err) => {
           console.log(err);
@@ -173,7 +179,7 @@ const attendanceController = {
       const list = req.body;
       let resdata = [];
       list.map((item) => {
-        attendanceService
+        attendanceService2
           .checkOutAttendance2(item.attendanceId, item.checkOutTime)
           .then((data) => {
             console.log(data);
@@ -228,4 +234,4 @@ const attendanceController = {
     }
   },
 };
-module.exports = attendanceController;
+module.exports = attendanceControllerv2;

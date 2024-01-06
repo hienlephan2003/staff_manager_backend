@@ -27,5 +27,9 @@ const EmployeeSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: "Degree",
   },
+  departmentId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Department",
+  },
 });
 module.exports = Employee = mongoose.model("Employee", EmployeeSchema);

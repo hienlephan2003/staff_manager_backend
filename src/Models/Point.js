@@ -1,20 +1,25 @@
 const mongoose = require("mongoose");
 //
 //lay tat ca cac nhan vien co paytype o trong payroll policy dem tinh
-const TotalPoint = new mongoose.Schema({
-  circleId: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "Circle",
-    required: true,
-  },
+const PointSchema = new mongoose.Schema({
   employeeId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Employee",
     required: true,
   },
-  expectedPoint: Number,
-  actualPoint: Number,
+  shiftId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Shift",
+  },
+  date: {
+    type: Date,
+    required: true,
+  },
+  attended: Boolean,
+  point: Number,
+  lateMinutes: Number,
+  soonMinutes: Number,
 });
-const Payslip = mongoose.model("Payslip", TotalPoint);
+const Point = mongoose.model("Point", PointSchema);
 
-module.exports = Payslip;
+module.exports = Point;

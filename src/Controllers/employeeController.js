@@ -49,5 +49,14 @@ const employeeController = {
       res.status(500).json(err);
     }
   },
+  getEmployeeList: async (req, res) => {
+    try {
+      const data = await employeeService.getListEmployee();
+      res.status(200).json(data);
+    } catch (err) {
+      console.log(err);
+      res.status(500).json(err);
+    }
+  },
 };
 module.exports = employeeController;

@@ -12,16 +12,13 @@ const PayrollTemplateSchema = new mongoose.Schema({
     ref: "PayRollPolicy",
     required: true,
   },
-  moneyType: [
+  formulas: [
     {
-      type: mongoose.Schema.Types.ObjectId,
+      moneyTypeId: mongoose.Schema.Types.ObjectId,
       ref: "MoneyType",
+      formula: String,
     },
   ],
-  payrollFormula: {
-    type: String,
-    required: true,
-  },
 });
 const PayrollTemplate = mongoose.model(
   "PayrollTemplate",

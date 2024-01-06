@@ -30,7 +30,7 @@ const departmentService = {
   getListDepartment: () => {
     return new Promise(async (resolve, reject) => {
       try {
-        const allDepartment = await Department.find({}).exec();
+        const allDepartment = await Department.find({}).populate("manager");
         resolve(allDepartment);
       } catch (e) {
         reject(e);

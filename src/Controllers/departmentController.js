@@ -3,6 +3,7 @@ const Department = require("../Models/Department");
 const DepartmentController = {
   addDepartment: async (req, res) => {
     try {
+      console.log(req.body);
       const newDepartment = await DepartmentService.createNewDepartment(
         req.body
       );

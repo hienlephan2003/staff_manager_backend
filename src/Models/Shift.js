@@ -14,25 +14,9 @@ const shiftSchema = new mongoose.Schema({
     ref: "ShiftType",
     required: true,
   },
-  dayOfWeek: Number,
+  date: Date,
 });
 
-shiftSchema.pre("save", function (next) {
-  console.log("pre save" + this.time);
-  const timeString = this.time;
-  if (timeString) {
-    const [startTime, endTime] = timeString.split(" - ");
-
-    const [startHour, startMinute] = startTime.split(":").map(Number);
-    const [endHour, endMinute] = endTime.split(":").map(Number);
-
-    this.startHour = startHour;
-    this.startMinute = startMinute;
-    this.endHour = endHour;
-    this.endMinute = endMinute;
-  }
-  next();
-});
 const Shift = mongoose.model("Shift", shiftSchema);
 
 module.exports = Shift;
